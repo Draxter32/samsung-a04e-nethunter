@@ -1,0 +1,11 @@
+kernel/
+toolchains/
+driver_rtl8812au/
+out/
+out_*/
+*.img
+*.apk
+*.log
+*.ko
+vendor_ko/
+backup/
