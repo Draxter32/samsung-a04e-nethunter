@@ -1,0 +1,43 @@
+diff --git a/Makefile b/Makefile
+index 63ce43e..846481c 100755
+--- a/Makefile
++++ b/Makefile
+@@ -6,13 +6,13 @@ EXTRA_CFLAGS += -Wno-unused-label
+ #EXTRA_CFLAGS += -Wno-unused-parameter
+ EXTRA_CFLAGS += -Wno-unused-function
+ EXTRA_CFLAGS += -Wno-implicit-fallthrough
+-EXTRA_CFLAGS += -Wno-cast-function-type
++EXTRA_CFLAGS += -Wno-unknown-warning-option
+ EXTRA_CFLAGS += -Wno-missing-declarations
+ EXTRA_CFLAGS += -Wno-missing-prototypes
+ #EXTRA_CFLAGS += -Wno-error=cast-function-type
+ #EXTRA_CFLAGS += -Wno-parentheses-equality
+ #EXTRA_CFLAGS += -Wno-error=incompatible-pointer-types
+-EXTRA_CFLAGS += -Wno-stringop-overread
++#EXTRA_CFLAGS += -Wno-stringop-overread (removido: clang viejo no la conoce, cubierta por -Wno-unknown-warning-option)
+ #EXTRA_CFLAGS += -Wno-pointer-bool-conversion
+ EXTRA_CFLAGS += -Wno-unknown-pragmas
+ #EXTRA_CFLAGS += -Wno-unused
+diff --git a/os_dep/linux/usb_intf.c b/os_dep/linux/usb_intf.c
+index 8dddad3..cba312b 100644
+--- a/os_dep/linux/usb_intf.c
++++ b/os_dep/linux/usb_intf.c
+@@ -178,6 +178,7 @@ static struct usb_device_id rtw_usb_id_tbl[] = {
+ 	{USB_DEVICE(0x2357, 0x010E), .driver_info = RTL8812}, /* TP-Link - Archer T4UH AC1300 */
+ 	{USB_DEVICE(0x2357, 0x010F), .driver_info = RTL8812}, /* TP-Link - T4UHP */
+ 	{USB_DEVICE(0x2357, 0x0122), .driver_info = RTL8812}, /* TP-Link - T4UHP (other) */
++	{USB_DEVICE(0x2357, 0x012E), .driver_info = RTL8812}, /* TP-Link - agregado a mano, adaptador del usuario */
+ 	{USB_DEVICE(0x2604, 0x0012), .driver_info = RTL8812}, /* Tenda U12 */
+ 	{USB_DEVICE(0x7392, 0xA822), .driver_info = RTL8812}, /* Edimax - Edimax */
+ #endif
+@@ -1574,9 +1575,7 @@ static void rtw_dev_remove(struct usb_interface *pusb_intf)
+ 	return;
+ 
+ }
+-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 24))
+-extern int console_suspend_enabled;
+-#endif
++/* console_suspend_enabled ya declarado en linux/console.h (kernel 4.19: tipo bool) */
+ 
+ static int __init rtw_drv_entry(void)
+ {

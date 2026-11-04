@@ -1,0 +1,32 @@
+diff --git a/drivers/Kconfig b/drivers/Kconfig
+index d343eb22a..08c4e1a26 100755
+--- a/drivers/Kconfig
++++ b/drivers/Kconfig
+@@ -233,5 +233,4 @@ source "drivers/samsung/Kconfig"
+ 
+ source "drivers/battery/Kconfig"
+ 
+-source "drivers/kernelsu/Kconfig"
+ endmenu
+diff --git a/drivers/Makefile b/drivers/Makefile
+index f77284d7d..733c464d6 100755
+--- a/drivers/Makefile
++++ b/drivers/Makefile
+@@ -196,4 +196,3 @@ obj-$(CONFIG_SWITCH)		+= switch/
+ obj-$(CONFIG_SEC_EXT)	+= samsung/
+ obj-$(CONFIG_BATTERY_SAMSUNG)   += battery/
+ 
+-obj-$(CONFIG_KSU) += kernelsu/
+diff --git a/scripts/mkcompile_h b/scripts/mkcompile_h
+index 1f10d91cc..f83007feb 100755
+--- a/scripts/mkcompile_h
++++ b/scripts/mkcompile_h
+@@ -73,7 +73,7 @@ UTS_TRUNCATE="cut -b -$UTS_LEN"
+   echo \#define LINUX_COMPILE_BY \"`echo $LINUX_COMPILE_BY | $UTS_TRUNCATE`\"
+   echo \#define LINUX_COMPILE_HOST \"`echo $LINUX_COMPILE_HOST | $UTS_TRUNCATE`\"
+ 
+-  CC_VERSION=$($CC -v 2>&1 | grep ' version ' | sed 's/[[:space:]]*$//')
++  CC_VERSION=$($CC -v 2>&1 | grep ' version ' | grep -v CUDA | head -n1 | sed 's/[[:space:]]*$//')
+   LD_VERSION=$($LD -v | head -n1 | sed 's/(compatible with [^)]*)//' \
+ 		      | sed 's/[[:space:]]*$//')
+   printf '#define LINUX_COMPILER "%s"\n' "$CC_VERSION, $LD_VERSION"
